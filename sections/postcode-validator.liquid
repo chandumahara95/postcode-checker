@@ -1,0 +1,98 @@
+<style>
+  .postcode_validator-section {padding: 2em 0;}
+  .postcode_validator-section .postcode-validator{width: 60%;margin: 20px auto;text-align: center;}
+  .postcode_validator-section .postcode-validator input{padding: 4px 10px; height: 30px;}
+  .postcode_validator-section .postcode-validator input:focus-visible{outline: unset;box-shadow: none;}
+  .postcode_validator-section .postcode-validator button{height: 30px;background: #000;color: #fff;border: none;}
+  .postcode_validator-section .postcode-validator button.disabled{height: 30px;pointer-events: none; background: #bcbcbc;}
+
+  @media screen and (max-width: 767px){
+    .postcode_validator-section{padding: 0px;}
+    .postcode_validator-section .postcode-validator{width: 100%;}
+  }
+</style>
+
+<div class="postcode-validator">
+  <h2>Check delivery:</h2>
+  <div class="postcode-validator-form">
+    <input type="input" name="postcode" class="postcode-input-box" placeholder="Enter Postcode" maxlength="6" pattern="[0-9]*" required>
+    <button type="button" class="postcode_checker_btn disabled">Check</button>
+    <p class="postcode-message"></p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let checkBtn = document.querySelector('.postcode_checker_btn');
+    let postCodeVal = document.querySelector('.postcode-input-box');
+    let messageBox = document.querySelector('.postcode-message');
+
+    const postCodeSheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTpX2rD7QA5zStISyttypTGslUANXN4bCXfFv0dwSUkYA9seZWtUy_e_nxrKfJg2c0r_mBF-gfHAiSI/pub?output=csv';
+
+    let validPostCodes = [];
+  
+    // Fetching data from Google Sheet data
+    fetch(postCodeSheetURL)
+      .then(response => response.text())
+      .then(data => {
+        validPostCodes = data.split('\n').map(postCode => postCode.trim());
+      });
+
+    checkBtn.addEventListener('click', function () {
+      let enteredPostCode = postCodeVal.value.trim();
+
+      // Checking if entered Postcode is included in validPostCodes variable or not... and showing the message accordingly.
+      if (validPostCodes.includes(enteredPostCode)) {
+        messageBox.textContent = 'Delivery Available';
+        messageBox.style.color = '#2F9B6A';
+      } else {
+        messageBox.textContent = 'Delivery Not Available';
+        messageBox.style.color = '#FF0000';
+      }
+    });
+
+    // Allow only numbers
+    postCodeVal.addEventListener("keypress", function (e) {
+      let charCode = e.charCode || e.keyCode;
+      // Allow only 0–9
+      if (charCode < 48 || charCode > 57) {
+        e.preventDefault();
+      }
+    });
+  
+    // Disable pasting non-numeric content
+    postCodeVal.addEventListener("paste", function (e) {
+      let pasteData = e.clipboardData.getData("text");
+      if (!/^\d+$/.test(pasteData)) {
+        e.preventDefault();
+      }
+    });
+
+    // Validation on inputting postcode digits
+    postCodeVal.addEventListener("input", validateInput);
+
+    function validateInput() {
+      let inputValue = postCodeVal.value.trim();
+  
+      // Enable button if 6 digits, otherwise disabling
+      if (inputValue.length === 6) {
+        checkBtn.classList.remove("disabled");
+      } else {
+        checkBtn.classList.add("disabled");
+      }
+    }
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Pincode Validator",
+    "class": "postcode_validator-section",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Pincode Validator"
+      }
+    ]
+  }
+{% endschema %}
