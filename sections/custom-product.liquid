@@ -1,6 +1,14 @@
+<h1>{{ product.title }}</h1>
+<p>{{ product.description }}</p>
+
 {% schema %}
   {
-    "name": "Section name",
-    "settings": []
+    "name": "Custom Product",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Custom Product"
+      }
+    ]
   }
 {% endschema %}
