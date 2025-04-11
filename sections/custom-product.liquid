@@ -1,6 +1,7 @@
 <h1>{{ product.title }}</h1>
 <p>{{ product.description }}</p>
 
+<img src="{{ product.featured_image | size: 400 }}" />
 <span>{{ product.price }}</span>
 
 {% schema %}
