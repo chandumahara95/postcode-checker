@@ -1,7 +1,7 @@
 <h1>{{ product.title }}</h1>
 <p>{{ product.description }}</p>
 
-<img src="{{ product.featured_media | img_url: 400 | asset_url }}" />
+<img src="{{ product.featured_media | img_url: '400x' | asset_url }}" />
 <span>{{ product.price }}</span>
 <br>
 {{ product.metafields.custom.custom_data }}
