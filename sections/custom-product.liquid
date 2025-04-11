@@ -3,6 +3,8 @@
 
 <img src="{{ product.featured_media | size: 400 | asset_url }}" />
 <span>{{ product.price }}</span>
+<br>
+{{ product.metafields.custom.custom_data }}
 
 {% schema %}
   {
