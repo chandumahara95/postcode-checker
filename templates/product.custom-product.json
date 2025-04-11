@@ -30,10 +30,15 @@
     "postcode_validator_Pa78H8": {
       "type": "postcode-validator",
       "settings": {}
+    },
+    "custom_product_N6htai": {
+      "type": "custom-product",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "postcode_validator_Pa78H8"
+    "postcode_validator_Pa78H8",
+    "custom_product_N6htai"
   ]
 }
